@@ -31,7 +31,8 @@ function init() {
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   renderer.sortObjects = false;
-  
+  renderer.setClearColor(new THREE.Color(0xffffFF));
+
   container.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
