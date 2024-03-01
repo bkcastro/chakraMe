@@ -13,10 +13,10 @@ init();
 animate();
 
 function init() {
-  container = document.getElementById("contianer");
+  container = document.getElementById("container");
 
   scene = new THREE.Scene();
-  
+
   camera = new THREE.PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
@@ -25,13 +25,13 @@ function init() {
   );
   camera.position.set(4, 4, 4);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true});
+  renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   renderer.sortObjects = false;
-  renderer.setClearColor(new THREE.Color(0xffffFF));
+  renderer.setClearColor(new THREE.Color(0xffffff));
 
   container.appendChild(renderer.domElement);
 
@@ -42,9 +42,9 @@ function init() {
   //   XRButton.createButton(renderer, { optionalFeatures: ["depth-sensing"] })
   // );
 
-  const axesHelper = new THREE.AxesHelper(1); 
+  const axesHelper = new THREE.AxesHelper(1);
   //scene.add(axesHelper);
-  rasengan = new Rasengan(); 
+  rasengan = new Rasengan();
   scene.add(rasengan);
   window.addEventListener("resize", onWindowResize);
 }
@@ -64,5 +64,9 @@ function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
-  renderer. setSize(window.innerWidth, window.innerHeight);
+  if (container != null) {
+    console.log(container.width, container.height);
+  }
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }

@@ -5,12 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ChakraMe</title>
   </head>
-  <body class="">
-    <div id="contianer"></div>
-
-    <div>
-      
+  <body class="grid grid-cols-3">
+    <div class="col-span-2 h-full w-full" id="container">1</div>
+    <div class="gird m-3 h-full grid-rows-3 rounded-md bg-slate-100 p-3">
+      <div>1</div>
+      <div>1</div>
+      <div id="particles">
+        <label for="PC">Particle Count:</label>
+        <input id="PC" type="range" min="0" max="400" value="100" onchange="" />
+        <span id="displayPC">100</span>
+        <br />
+        <label for="PC">Particle Count:</label>
+        <input id="PC" type="range" min="0" max="400" value="100" onchange="" />
+        <span id="displayPC">100</span>
+        <br />
+        <label for="innerPC">Inner Particle Color:</label>
+        <input class="" id="innerPC" type="color" /> <br />
+        <label for="innerPC">Inner Particle Color:</label>
+        <input class="" id="innerPC" type="color" />
+      </div>
     </div>
   </body>
+  <script>
+    var particleCount = document.getElementById("PC");
+    var displayPC = document.getElementById("displayPC");
+
+    particleCount.addEventListener("input", () => {
+      displayPC.textContent = particleCount.value;
+    });
+  </script>
   <script type="module" src="./src/main.js"></script>
 </html>
