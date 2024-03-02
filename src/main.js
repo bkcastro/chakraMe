@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import Rasengan from "./rasengan";
+import { randFloat } from "three/src/math/MathUtils";
 
 const clock = new THREE.Clock();
 
@@ -45,6 +46,8 @@ function init() {
   const axesHelper = new THREE.AxesHelper(1);
   //scene.add(axesHelper);
   rasengan = new Rasengan();
+  rasengan.setOuterAuraColor(0xf77e06)
+
   scene.add(rasengan);
   window.addEventListener("resize", onWindowResize);
 }
@@ -70,3 +73,14 @@ function onWindowResize() {
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
+
+function getRasengan() {
+  if (rasengan == null) {
+    console.log("Rasengan is null."); 
+  }
+
+  return rasengan;
+}
+
+
+export {getRasengan}; 

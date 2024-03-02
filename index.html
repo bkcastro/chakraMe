@@ -5,34 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ChakraMe</title>
   </head>
-  <body class="grid grid-cols-3">
-    <div class="col-span-2 h-full w-full" id="container">1</div>
+  <body class="grid grid-cols-3 text-lg">
+    <div class="col-span-2 h-full w-full" id="container"></div>
     <div class="gird m-3 h-full grid-rows-3 rounded-md bg-slate-100 p-3">
-      <div>1</div>
-      <div>1</div>
-      <div id="particles">
-        <label for="PC">Particle Count:</label>
-        <input id="PC" type="range" min="0" max="400" value="100" onchange="" />
-        <span id="displayPC">100</span>
+      <div class="mb-3 border-b-2 border-t-2 rounded-md px-3 py-2" >
+        <h1 class="text-xl mb-3">Outer Aura</h1>
+        <label>Color:</label>
+        <input type="color"/> <br />
+        <label>Size:</label>
+        <input type="range" min=".1" max="2" value="1"/>
+        <br>
+        <label>Visable:</label>
+        <input type="checkbox">
+      </div>
+      <div class="mb-3 border-b-2 border-t-2 rounded-md px-3 py-2" >
+        <h1 class="text-xl mb-3">Inner Aura</h1>
+        <label>Color:</label>
+        <input type="color" /> <br />
+        <label>Size:</label>
+        <input type="range" min=".1" max="2" value="1" />
+        <label>Visable:</label>
+        <input type="checkbox">
+      </div>
+      <div class="mb-3 border-b-2 border-t-2 rounded-md px-3 py-2" >
+        <h1 class="text-xl mb-3">Particles</h1>
+        <label>Render as line:</label>
+        <input type="checkbox"> <br>
+        <label>Count:</label>
+        <input type="range" min="0" max="400" value="100"/>
         <br />
-        <label for="PC">Particle Count:</label>
-        <input id="PC" type="range" min="0" max="400" value="100" onchange="" />
-        <span id="displayPC">100</span>
+        <label>Speed:</label>
+        <input type="range" min="0" max="400" value="100"/>
         <br />
-        <label for="innerPC">Inner Particle Color:</label>
-        <input class="" id="innerPC" type="color" /> <br />
-        <label for="innerPC">Inner Particle Color:</label>
-        <input class="" id="innerPC" type="color" />
+        <label>Gravity Strength:</label>
+        <input type="range" min="0" max="100" value="50"/>
+        <br />
+        <label>Inner Color:</label>
+        <input type="color" /> <br />
+        <label >Outer Color:</label>
+        <input type="color" />
+        <br>
+        <label>Visable:</label>
+        <input type="checkbox">
+      </div>
+      <div class="mb-3 border-b-2 border-t-2 rounded-md px-3 py-2" >
+        <h1 class="text-xl">Object</h1>
+        <p class="text-md mb-3 text-gray-700">(effects entire object)</p>
+        
+        <div class="px-2">
+          <h2>Rotation Speed:</h2>
+          <label>X axis:</label>
+          <input type="range" min="0" max="10" value="1"/>
+          <br />
+          <label>Y axis:</label>
+          <input type="range" min="0" max="10" value="1"/>
+          <br />
+          <label>Z axis:</label>
+          <input type="range" min="0" max="10" value="1"/>
+          <br />
+        </div>
       </div>
     </div>
   </body>
   <script>
-    var particleCount = document.getElementById("PC");
-    var displayPC = document.getElementById("displayPC");
-
-    particleCount.addEventListener("input", () => {
-      displayPC.textContent = particleCount.value;
-    });
   </script>
   <script type="module" src="./src/main.js"></script>
+
+  <script type="module">
+    import {getRasengan} from './src/main.js'
+    import {Color} from "three"
+    // This will handle ui input.
+    var inputsFields = document.querySelectorAll('input'); 
+
+    inputsFields.forEach((input, i) => {
+      input.id = i; 
+      input.onchange = action;
+    });
+
+    function action(event) {
+      if(event != null) {
+        var tempRasengan = getRasengan(); 
+        //console.log(tempRasengan.children[0])
+        
+        switch(event.target.id) {
+          case "0":
+            console.log(new Color(event.target.value))
+            console.log(event.target.value)
+            tempRasengan.children[1].material.uniforms.uColor.value = new Color("red");
+            break; 
+          case "1": console.log(1); break; 
+          case "2": 
+          case "3": 
+          case "4": 
+          case "5": 
+      }
+      }
+    }
+  </script>
 </html>

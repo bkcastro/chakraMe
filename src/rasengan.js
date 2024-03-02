@@ -10,9 +10,9 @@ class Rasengan extends THREE.Object3D {
     this.shaders = new Shaders();
 
     const geometry = new THREE.SphereGeometry(1, 60, 60);
-    const outerMaterial = new THREE.ShaderMaterial({
+    this.outerMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        color: { value: new THREE.Color("red") },
+        uColor: { value: new THREE.Color("red") },
       },
       vertexShader: this.shaders.rasengan.outer.vertex,
       fragmentShader: this.shaders.rasengan.outer.fragment,
@@ -20,12 +20,12 @@ class Rasengan extends THREE.Object3D {
       opacity: 0.5,
     });
 
-    const outerSphere = new THREE.Mesh(geometry, outerMaterial);
+    const outerSphere = new THREE.Mesh(geometry, this.outerMaterial);
     this.add(outerSphere);
 
-    const auraMaterial = new THREE.ShaderMaterial({
+    this.auraMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        color: { value: new THREE.Color("red") },
+        uColor: { value: new THREE.Color("red") },
       },
       vertexShader: this.shaders.rasengan.aura.vertex,
       fragmentShader: this.shaders.rasengan.aura.fragment,
@@ -35,7 +35,7 @@ class Rasengan extends THREE.Object3D {
       opacity: 0.9,
     });
 
-    const auraSphere = new THREE.Mesh(geometry, auraMaterial);
+    const auraSphere = new THREE.Mesh(geometry, this.auraMaterial);
     this.add(auraSphere);
 
     this.sphereRadius = 1;
@@ -43,9 +43,11 @@ class Rasengan extends THREE.Object3D {
     this.particleCount = 200;
     const particleGeometry = new THREE.BufferGeometry();
     //const particleMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: .01 });
-    const particleMaterial = new THREE.ShaderMaterial({
+    this.particleMaterial = new THREE.ShaderMaterial({
       uniforms: {
         color: { value: new THREE.Color("red") },
+        innerColor: { value: new THREE.Color("red") },
+        outerColor: { value: new THREE.Color("blue") },
       },
       vertexShader: this.shaders.rasengan.particles.vertex,
       fragmentShader: this.shaders.rasengan.particles.fragment,
@@ -56,9 +58,9 @@ class Rasengan extends THREE.Object3D {
 
     for (let i = 0; i < this.particleCount; i++) {
       const vertex = new THREE.Vector3(
-        (Math.random() - 0.5) * this.sphereRadius,
-        (Math.random() - 0.5) * this.sphereRadius,
-        (Math.random() - 0.5) * this.sphereRadius
+        (Math.random() - 0.5) * this.sphereRadius/4,
+        (Math.random() - 0.5) * this.sphereRadius/4,
+        (Math.random() - 0.5) * this.sphereRadius/4
       );
       vertex.toArray(this.positions, i * 3);
 
@@ -67,7 +69,7 @@ class Rasengan extends THREE.Object3D {
           Math.random() - 0.5,
           Math.random() - 0.5,
           Math.random() - 0.5
-        ).multiplyScalar(0.1)
+        ).multiplyScalar(0.01)
       );
     }
 
@@ -75,8 +77,12 @@ class Rasengan extends THREE.Object3D {
       "position",
       new THREE.BufferAttribute(this.positions, 3)
     );
-    this.particles = new THREE.Line(particleGeometry, particleMaterial);
+    this.particles = new THREE.Line(particleGeometry, this.particleMaterial);
     this.add(this.particles);
+  }
+
+  updateParticlesInnerColor(event) {
+    console.log(event);
   }
 
   update(time) {
@@ -96,8 +102,9 @@ class Rasengan extends THREE.Object3D {
         positionAttribute.array[index + 1],
         positionAttribute.array[index + 2]
       );
+
       const directionToCenter = position.clone().negate().normalize();
-      const gravityStrength = 0.000091; // Adjust the strength of the gravitational pull
+      const gravityStrength = 0.00000; // Adjust the strength of the gravitational pull
       velocity.add(directionToCenter.multiplyScalar(gravityStrength));
 
       if (position.length() >= this.sphereRadius / 1.2) {
@@ -108,12 +115,18 @@ class Rasengan extends THREE.Object3D {
 
     positionAttribute.needsUpdate = true;
 
-    this.rotateX(0.01);
-    this.rotateY(0.01);
-    this.rotateZ(0.05);
+    //this.rotateX(0.01);
+    //this.rotateY(0.01);
+    //this.rotateZ(0.05);
   }
 
-  setParticleCount(count = 0) {}
+  setOuterAuraColor(color) {
+    this.outerMaterial.uniforms.uColor.value = new THREE.Color(color);
+  }
+
+  changeOuterAuraColor(event) {
+    console.log(event.target); 
+  }
 }
 
 export default Rasengan;
