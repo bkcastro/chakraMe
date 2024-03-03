@@ -10,38 +10,36 @@ class Rasengan extends THREE.Object3D {
     this.shaders = new Shaders();
 
     const geometry = new THREE.SphereGeometry(1, 60, 60);
-    this.outerMaterial = new THREE.ShaderMaterial({
+    this.outerAuraMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uColor: { value: new THREE.Color("red") },
       },
-      vertexShader: this.shaders.rasengan.outer.vertex,
-      fragmentShader: this.shaders.rasengan.outer.fragment,
+      vertexShader: this.shaders.rasengan.outerAura.vertex,
+      fragmentShader: this.shaders.rasengan.outerAura.fragment,
       transparent: true,
       opacity: 0.5,
     });
 
-    const outerSphere = new THREE.Mesh(geometry, this.outerMaterial);
-    this.add(outerSphere);
-
-    this.auraMaterial = new THREE.ShaderMaterial({
+    this.outerAura = new THREE.Mesh(geometry, this.outerAuraMaterial);
+    this.add(this.outerAura);
+    this.outerAura.visible = false;
+    
+    this.innerAuraMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        uColor: { value: new THREE.Color("red") },
+        uColor: { value: new THREE.Color("black") },
       },
-      vertexShader: this.shaders.rasengan.aura.vertex,
-      fragmentShader: this.shaders.rasengan.aura.fragment,
-      blending: THREE.AdditiveBlending,
-      //side: THREE.BackSide,
-      transparent: true,
-      opacity: 0.9,
+      vertexShader: this.shaders.rasengan.innerAura.vertex,
+      fragmentShader: this.shaders.rasengan.innerAura.fragment,
     });
 
-    const auraSphere = new THREE.Mesh(geometry, this.auraMaterial);
-    this.add(auraSphere);
+    this.innerAura= new THREE.Mesh(geometry, this.innerAuraMaterial);
+    this.innerAura.scale.set(.25, .25, .25);
+    this.add(this.innerAura);
 
     this.sphereRadius = 1;
 
     this.particleCount = 200;
-    const particleGeometry = new THREE.BufferGeometry();
+    this.particleGeometry = new THREE.BufferGeometry();
     //const particleMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: .01 });
     this.particleMaterial = new THREE.ShaderMaterial({
       uniforms: {
@@ -73,21 +71,19 @@ class Rasengan extends THREE.Object3D {
       );
     }
 
-    particleGeometry.setAttribute(
+    this.particleGeometry.setAttribute(
       "position",
       new THREE.BufferAttribute(this.positions, 3)
     );
-    this.particles = new THREE.Line(particleGeometry, this.particleMaterial);
+    this.particles = new THREE.Line(this.particleGeometry, this.particleMaterial);
     this.add(this.particles);
-  }
-
-  updateParticlesInnerColor(event) {
-    console.log(event);
   }
 
   update(time) {
     // Update particle positions
+    
     const positionAttribute = this.particles.geometry.attributes.position;
+    if (positionAttribute == null) {return}
     for (let i = 0; i < this.particleCount; i++) {
       const index = i * 3;
       const velocity = this.velocities[i];
@@ -104,7 +100,7 @@ class Rasengan extends THREE.Object3D {
       );
 
       const directionToCenter = position.clone().negate().normalize();
-      const gravityStrength = 0.00000; // Adjust the strength of the gravitational pull
+      const gravityStrength = 0.00001; // Adjust the strength of the gravitational pull
       velocity.add(directionToCenter.multiplyScalar(gravityStrength));
 
       if (position.length() >= this.sphereRadius / 1.2) {
@@ -118,14 +114,6 @@ class Rasengan extends THREE.Object3D {
     //this.rotateX(0.01);
     //this.rotateY(0.01);
     //this.rotateZ(0.05);
-  }
-
-  setOuterAuraColor(color) {
-    this.outerMaterial.uniforms.uColor.value = new THREE.Color(color);
-  }
-
-  changeOuterAuraColor(event) {
-    console.log(event.target); 
   }
 }
 

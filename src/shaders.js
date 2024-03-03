@@ -1,29 +1,8 @@
 class Shaders {
   constructor() {
     this.rasengan = {
-      aura: {
-        fragment: `
-                uniform vec3 color;
-
-                varying vec3 vertexNormal; 
-
-                void main() {
-                    float intensity = pow(1.0 - dot(vertexNormal, vec3(0.0, 0.0, 1.0)), 1.0);
-                    gl_FragColor = vec4(0.5, 0.75, 1.0, 1.0) * intensity;
-                }
-
-`,
-        vertex: `
-                varying vec3 vertexNormal; 
-
-                void main() {
-                    vertexNormal = normalize(normalMatrix * normal);
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); 
-                }
-`,
-      },
-      outer: {
-        vertex: `
+      innerAura: {
+                vertex: `
                 varying vec3 vertexNormal; 
 
                 void main() {
@@ -40,6 +19,27 @@ class Shaders {
                     float intensity = pow(1.6 - dot(vertexNormal, vec3(0.0, 0.0, 1.0)), 2.0);
                     gl_FragColor = vec4(uColor, 1.0) * intensity;
                 }
+`,
+      },
+      outerAura: {
+        vertex: `
+                varying vec3 vertexNormal; 
+
+                void main() {
+                    vertexNormal = normalize(normalMatrix * normal);
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); 
+                }
+`,
+        fragment: `
+                uniform vec3 uColor;
+
+                varying vec3 vertexNormal; 
+
+                void main() {
+                    float intensity = pow(1.0 - dot(vertexNormal, vec3(0.0, 0.0, 1.0)), 2.0);
+                    gl_FragColor = vec4(uColor, 1.0) * intensity;
+                }
+
 `,
       },
       particles: {
