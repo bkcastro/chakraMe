@@ -47,6 +47,7 @@ class Shaders {
                 attribute float size;
                 uniform vec3 innerColor; 
                 uniform vec3 outerColor; 
+                uniform float uSize;
 
                 varying vec3 vInnerColor; 
                 varying vec3 vOuterColor; 
@@ -57,7 +58,7 @@ class Shaders {
                     vOuterColor = outerColor;
                     vPosition = position;
                     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-                    gl_PointSize = 3.0;
+                    gl_PointSize = uSize;
                     gl_Position = projectionMatrix * mvPosition;
                 }
             `,

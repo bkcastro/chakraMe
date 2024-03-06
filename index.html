@@ -6,72 +6,71 @@
     <title>ChakraMe</title>
   </head>
   <body>
-    <div class="grid grid-cols-3 text-lg w-screen h-screen">
+    <div class="grid grid-cols-3 w-screen h-screen overflow-hidden">
       <div class="col-span-2 h-full w-full bg-red-200" id="container"></div>
-      <div class="gird m-3 grid-rows-3 rounded-md bg-slate-100 p-3 h-min">
+      <div class="rounded-md bg-slate-100 max-w-full max-h-full">
+        <div class="gird grid-rows-3 p-3 max-w-[400px] max-h-full  overflow-auto">
         <div class="mb-3 border-b-2 border-t-2 rounded-md px-3 py-2" >
-          <h1 class="text-xl mb-3">Outer Aura</h1>
-          <label>Color:</label>
-          <input type="color"/> <br />
-          <label>Size:</label>
-          <input type="range" min="0" max="100" value="50"/>
-          <br>
-          <label>Visable:</label>
+          <h1 class="text-lg mb-3">Aura</h1>
+          <label class="block text-sm font-medium text-gray-700" >Color:</label>
+          <input type="color" class="h-4 w-40 m-auto"/> <br />
+           <div>
+          <label class="block text-sm font-medium text-gray-700">Size:</label>
+          <input type="range" min="0" max="100" value="50" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
+          </div>
+          <label class="text-sm font-medium text-gray-700">Visable:</label>
           <input type="checkbox">
         </div>
         <div class="mb-3 border-b-2 border-t-2 rounded-md px-3 py-2" >
-          <h1 class="text-xl mb-3">Inner Aura</h1>
-          <label>Color:</label>
-          <input type="color" /> <br />
-          <label>Size:</label>
-          <input type="range" min="0" max="100" value="25" />
+          <h1 class="text-lg mb-3">Energy</h1>
+          <label class="block text-sm font-medium text-gray-700">Color:</label>
+          <input type="color" class="h-4 w-40 m-auto"/> <br />
+          <label class="block text-sm font-medium text-gray-700" >Size:</label>
+          <input type="range" min="0" max="100" value="25" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
           <br>
-          <label>Visable:</label>
+          <label class="text-sm font-medium text-gray-700">Visable:</label>
           <input type="checkbox">
         </div>
         <div class="mb-3 border-b-2 border-t-2 rounded-md px-3 py-2" >
-          <h1 class="text-xl mb-3">Particles</h1>
-          <label>Render as line:</label>
+          <h1 class="text-lg mb-3">Particles</h1>
+          <label class="text-sm font-medium text-gray-700">Render as lines:</label>
           <input type="checkbox"> <br>
-          <label>Count:</label>
-          <input type="range" min="0" max="400" value="100"/>
+          <label class="block text-sm font-medium text-gray-700" >Count:</label>
+          <input type="range" min="0" max="400" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
           <br />
-          <label>Speed:</label>
-          <input type="range" min="0" max="100" value="100"/>
+          <label class="block text-sm font-medium text-gray-700">Speed:</label>
+          <input type="range" min="0" max="100" value="50" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
           <br />
-          <label>Size:</label>
-          <input type="range" min="0" max="100" value="100"/>
+          <label class="block text-sm font-medium text-gray-700">Size:</label>
+          <input type="range" min="0" max="50" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
           <br />
-          <label>Radius:</label>
-          <input type="range" min="0" max="100" value="20"/>
+          <label class="block text-sm font-medium text-gray-700">Radius:</label>
+          <input type="range" min="0" max="100" value="20" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
           <br />
-          
-          <label>Center Gravity Strength:</label>
-          <input type="range" min="0" max="100" value="50"/>
-          <br />
-          <label>Inner Color:</label>
-          <input type="color" /> <br />
-          <label >Outer Color:</label>
-          <input type="color" />
+          <label class="block text-sm font-medium text-gray-700">Inner Color:</label>
+          <input type="color" class="h-4 w-40 m-auto"/> <br />
+          <label class="block text-sm font-medium text-gray-700">Outer Color:</label>
+          <input type="color" class="h-4 w-40 m-auto"/>
           <br>
-          <label>Visable:</label>
+          <label class="text-sm font-medium text-gray-700">Visable:</label>
           <input type="checkbox">
         </div>
         <div class="mb-3 border-b-2 border-t-2 rounded-md px-3 py-2" >
-          <h1 class="text-xl">Object</h1>
-          <div class="px-2">
-            <h2>Rotation Speed:</h2>
-            <label>X axis:</label>
-            <input type="range" min="0" max="10" value="1"/>
+          <h1 class="text-lg">Object</h1>
+          <div class="p-2">
+            <h2 >Rotation Speed:</h2>
+            <label class="text-sm font-medium text-gray-700">X:</label>
+            <input type="range" min="0" max="200" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
             <br />
-            <label>Y axis:</label>
-            <input type="range" min="0" max="10" value="1"/>
+            <label class="text-sm font-medium text-gray-700">Y:</label>
+            <input type="range" min="0" max="200" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
             <br />
-            <label>Z axis:</label>
-            <input type="range" min="0" max="10" value="1"/>
+            <label class="text-sm font-medium text-gray-700">Z:</label>
+            <input type="range" min="0" max="200" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
             <br />
           </div>
         </div>
+      </div>
       </div>
     </div>
   </body>
