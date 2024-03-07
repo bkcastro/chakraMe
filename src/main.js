@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import Rasengan from "./rasengan";
-
+import Chidori from "./chidori";
 const clock = new THREE.Clock();
 
 let container,
@@ -12,6 +12,7 @@ let container,
   arbutton,
   renderer,
   controls,
+  chidori,
   rasengan = null;
 
 var inputsFields = document.querySelectorAll("input");
@@ -55,8 +56,10 @@ function init() {
   const axesHelper = new THREE.AxesHelper(1);
   scene.add(axesHelper);
   rasengan = new Rasengan();
+  chidori = new Chidori();
 
-  scene.add(rasengan);
+  //scene.add(rasengan);
+  scene.add(chidori);
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -112,8 +115,8 @@ inputsFields.forEach((input, i) => {
       input.checked = true;
       break;
     case "3":
-      input.value =
-        "#" + rasengan.innerAuraMaterial.uniforms.uColor.value.getHexString();
+      //input.value =
+      //  "#" + rasengan.innerAuraMaterial.uniforms.uColor.value.getHexString();
       break;
     case "4":
       input.value = rasengan.innerAura.scale.x * 50;
