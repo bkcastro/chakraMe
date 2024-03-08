@@ -6,7 +6,6 @@ import Rasengan from "./rasengan";
 import Chidori from "./chidori";
 import { ARButton } from "./ARButton";
 import Hand from "./hand";
-import { RSC_HEADER } from "next/dist/client/components/app-router-headers";
 
 const clock = new THREE.Clock();
 
@@ -16,7 +15,7 @@ let container,
   renderer,
   controls,
   chidori,
-  center, 
+  center,
   hand,
   rasengan = null;
 
@@ -33,7 +32,7 @@ function init() {
   container = document.getElementById("container");
   scene = new THREE.Scene();
 
-  center = new THREE.Vector3(0, 0, 0); 
+  center = new THREE.Vector3(0, 0, 0);
 
   camera = new THREE.PerspectiveCamera(
     50,
@@ -56,14 +55,14 @@ function init() {
   controls = new OrbitControls(camera, renderer.domElement);
   controls.update();
 
-  document.body.appendChild( XRButton.createButton( renderer, { 'optionalFeatures': [] } ) );
+  document.body.appendChild(
+    XRButton.createButton(renderer, { optionalFeatures: [] })
+  );
 
-
-    
   container.appendChild(ARButton.createButton(render, {}));
-  const axesHelper = new THREE.AxesHelper(.4);
+  const axesHelper = new THREE.AxesHelper(0.4);
   scene.add(axesHelper);
-  rasengan = new Rasengan(); 
+  rasengan = new Rasengan();
   //scene.add(rasengan);
   hand = new Hand(scene, renderer);
   window.addEventListener("resize", onWindowResize);
@@ -86,7 +85,7 @@ function render() {
 
   objects.forEach((object) => {
     object.update(elapsedTime);
-  })
+  });
   renderer.render(scene, camera);
 }
 
