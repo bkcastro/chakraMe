@@ -94,8 +94,8 @@ class Rasengan extends Jutsu {
     });
 
     this.outerAura = new THREE.Mesh(geometry, this.outerAuraMaterial);
-    this.outerAura.visible = false;
-    this.outerAura.scale.set(.4, .4 ,.4);
+    this.outerAura.visible = true;
+    this.outerAura.scale.set(0.4, 0.4, 0.4);
     this.add(this.outerAura);
 
     this.innerAuraMaterial = new THREE.ShaderMaterial({
@@ -107,15 +107,15 @@ class Rasengan extends Jutsu {
     });
 
     this.innerAura = new THREE.Mesh(geometry, this.innerAuraMaterial);
-    this.innerAura.visible = false;
-    this.innerAura.scale.set(0.5, 0.5, 0.5);
+    this.innerAura.visible = true;
+    this.innerAura.scale.set(0.25, 0.25, 0.25);
 
     this.add(this.innerAura);
 
     this.particleRadius = 1;
     this.particleSpeed = 2;
     this.particleCount = 200;
-    this.renderAsParticles = false;
+    this.renderAsParticles = true;
     this.positions = null;
     this.velocities = null;
     this.gravityStrength = 0.00005;
@@ -125,7 +125,7 @@ class Rasengan extends Jutsu {
       uniforms: {
         innerColor: { value: new THREE.Color("blue") },
         outerColor: { value: new THREE.Color("red") },
-        uSize: { value: 3.0 },
+        uSize: { value: 4.0 },
       },
       vertexShader: shaders.particles.vertex,
       fragmentShader: shaders.particles.fragment,
@@ -187,10 +187,26 @@ class Rasengan extends Jutsu {
   }
 
   setRandomParametres() {
-    this.outerAuraMaterial.uniforms.uColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
-    this.innerAuraMaterial.uniforms.uColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
-    this.particleMaterial.uniforms.innerColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
-    this.particleMaterial.uniforms.outerColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
+    this.outerAuraMaterial.uniforms.uColor.value = new THREE.Color(
+      Math.random(),
+      Math.random(),
+      Math.random()
+    );
+    this.innerAuraMaterial.uniforms.uColor.value = new THREE.Color(
+      Math.random(),
+      Math.random(),
+      Math.random()
+    );
+    this.particleMaterial.uniforms.innerColor.value = new THREE.Color(
+      Math.random(),
+      Math.random(),
+      Math.random()
+    );
+    this.particleMaterial.uniforms.outerColor.value = new THREE.Color(
+      Math.random(),
+      Math.random(),
+      Math.random()
+    );
     this.createParticles();
   }
 
