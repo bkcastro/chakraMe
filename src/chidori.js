@@ -42,7 +42,7 @@ class Chidori extends Jutsu {
 
     this.particleRadius = 1;
     this.particleSpeed = 1;
-    this.particleCount = 30;
+    this.particleCount = 10;
     this.renderAsParticles = false;
     this.positions = null;
     this.velocities = null;

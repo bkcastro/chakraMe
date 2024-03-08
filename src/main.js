@@ -4,18 +4,23 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import Rasengan from "./rasengan";
 import Chidori from "./chidori";
+import { ARButton } from "./ARButton";
+import Hand from "./hand";
+import { RSC_HEADER } from "next/dist/client/components/app-router-headers";
+
 const clock = new THREE.Clock();
 
 let container,
   camera,
   scene,
-  arbutton,
   renderer,
   controls,
   chidori,
+  center, 
+  hand,
   rasengan = null;
 
-var inputsFields = document.querySelectorAll("input");
+var objects = [];
 
 init();
 animate();
@@ -27,6 +32,8 @@ function init() {
 
   container = document.getElementById("container");
   scene = new THREE.Scene();
+
+  center = new THREE.Vector3(0, 0, 0); 
 
   camera = new THREE.PerspectiveCamera(
     50,
@@ -49,17 +56,16 @@ function init() {
   controls = new OrbitControls(camera, renderer.domElement);
   controls.update();
 
-  // add ar button
-  arButton = document.getElementById("arButton");
-  arButton.addEventListener("click", startAR);
+  document.body.appendChild( XRButton.createButton( renderer, { 'optionalFeatures': [] } ) );
 
-  const axesHelper = new THREE.AxesHelper(1);
+
+    
+  container.appendChild(ARButton.createButton(render, {}));
+  const axesHelper = new THREE.AxesHelper(.4);
   scene.add(axesHelper);
-  rasengan = new Rasengan();
-  chidori = new Chidori();
-
+  rasengan = new Rasengan(); 
   //scene.add(rasengan);
-  scene.add(chidori);
+  hand = new Hand(scene, renderer);
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -70,7 +76,17 @@ function animate() {
 function render() {
   // Get the elapsed time in seconds since the clock started
   const elapsedTime = clock.getElapsedTime();
-  rasengan.update(elapsedTime);
+  if (rasengan != null) {
+    rasengan.update(elapsedTime);
+  }
+
+  if (hand != null) {
+    hand.update(elapsedTime);
+  }
+
+  objects.forEach((object) => {
+    object.update(elapsedTime);
+  })
   renderer.render(scene, camera);
 }
 
@@ -79,146 +95,4 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(container.getBoundingClientRect().width, window.innerHeight);
-}
-
-function startAR() {
-  console.log(navigator);
-  if ("xr" in navigator) {
-    navigator.xr
-      .requestSession("immersive-ar", { requiredFeatures: ["local-floor"] })
-      .then((session) => {
-        renderer.xr.setSession(session);
-        arButton.style.display = "none"; // Hide the button once in AR mode
-        animate();
-      })
-      .catch((err) => {
-        console.error("Unable to start AR session:", err);
-      });
-  } else {
-    console.error("WebXR not supported by this browser");
-  }
-}
-
-inputsFields.forEach((input, i) => {
-  input.id = i;
-  input.onchange = action(i);
-
-  switch (input.id) {
-    case "0":
-      input.value =
-        "#" + rasengan.outerAuraMaterial.uniforms.uColor.value.getHexString();
-      break;
-    case "1":
-      input.value = rasengan.outerAura.scale.x * 50;
-      break;
-    case "2":
-      input.checked = true;
-      break;
-    case "3":
-      //input.value =
-      //  "#" + rasengan.innerAuraMaterial.uniforms.uColor.value.getHexString();
-      break;
-    case "4":
-      input.value = rasengan.innerAura.scale.x * 50;
-      break;
-    case "5":
-      input.checked = true;
-      break;
-    case "6":
-      input.checked = true;
-      break;
-    case "7":
-      input.value = rasengan.particleCount;
-      break;
-    case "8":
-      input.value = rasengan.particleSpeed * 50;
-      break;
-    case "9":
-      input.value = rasengan.particleMaterial.uniforms.uSize.value;
-      break;
-    case "10":
-      input.value = rasengan.particleRadius * 50;
-      break;
-    case "11":
-      input.value =
-        "#" +
-        rasengan.particleMaterial.uniforms.innerColor.value.getHexString();
-      break;
-    case "12":
-      input.value =
-        "#" +
-        rasengan.particleMaterial.uniforms.outerColor.value.getHexString();
-      break;
-    case "13":
-      input.value = rasengan.particles.visible;
-      break;
-    case "14":
-      input.value = rasengan.rotationSpeed.x * 50;
-      break;
-    case "15":
-      input.value = rasengan.rotationSpeed.y * 50;
-      break;
-    case "16":
-      input.value = rasengan.rotationSpeed.z * 50;
-      break;
-  }
-});
-
-function action(id) {
-  const actions = {
-    0: (event) =>
-      (rasengan.outerAuraMaterial.uniforms.uColor.value = new THREE.Color(
-        event.target.value
-      )),
-    1: (event) =>
-      rasengan.outerAura.scale.set(
-        event.target.value / 50,
-        event.target.value / 50,
-        event.target.value / 50
-      ),
-    2: (event) => (rasengan.outerAura.visible = !rasengan.outerAura.visible),
-    3: (event) =>
-      (rasengan.innerAuraMaterial.uniforms.uColor.value = new THREE.Color(
-        event.target.value
-      )),
-    4: (event) =>
-      rasengan.innerAura.scale.set(
-        event.target.value / 50,
-        event.target.value / 50,
-        event.target.value / 50
-      ),
-    5: (event) => (rasengan.innerAura.visible = !rasengan.innerAura.visible),
-    6: (event) => {
-      rasengan.renderAsParticles = !rasengan.renderAsParticles;
-      rasengan.createParticles();
-    },
-    7: (event) => {
-      rasengan.particleCount = event.target.value;
-      rasengan.createParticles();
-    },
-    8: (event) => {
-      rasengan.particleSpeed = event.target.value / 50;
-      rasengan.createParticles();
-    },
-    9: (event) =>
-      (rasengan.particleMaterial.uniforms.uSize.value = event.target.value / 2),
-    10: (event) => {
-      rasengan.particleRadius = event.target.value / 50;
-      rasengan.createParticles();
-    },
-    11: (event) =>
-      (rasengan.particleMaterial.uniforms.innerColor.value = new THREE.Color(
-        event.target.value
-      )),
-    12: (event) =>
-      (rasengan.particleMaterial.uniforms.outerColor.value = new THREE.Color(
-        event.target.value
-      )),
-    13: (event) => (rasengan.particles.visible = !rasengan.particles.visible),
-    14: (event) => (rasengan.rotationSpeed.x = event.target.value / 50),
-    15: (event) => (rasengan.rotationSpeed.y = event.target.value / 50),
-    16: (event) => (rasengan.rotationSpeed.z = event.target.value / 50),
-  };
-
-  return actions[id];
 }
