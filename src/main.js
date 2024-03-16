@@ -13,7 +13,7 @@ let container,
   renderer,
   controls,
   chidori,
-  center, 
+  center,
   hand,
   rasengan = null;
 
@@ -38,7 +38,7 @@ function init() {
   container = document.getElementById("container");
   scene = new THREE.Scene();
 
-  center = new THREE.Vector3(0, 0, 0); 
+  center = new THREE.Vector3(0, 0, 0);
 
   camera = new THREE.PerspectiveCamera(
     50,
@@ -73,6 +73,7 @@ function init() {
   scene.add(axesHelper);
   rasengan = new Rasengan(); 
   scene.add(rasengan);
+
   hand = new Hand(scene, renderer);
   window.addEventListener("resize", onWindowResize);
 
@@ -99,7 +100,7 @@ function render() {
 
   objects.forEach((object) => {
     object.update(elapsedTime);
-  })
+  });
   renderer.render(scene, camera);
 }
 
