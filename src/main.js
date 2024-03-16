@@ -23,6 +23,8 @@ inputsFields.forEach((input, i) => {
   input.onchange = action(i);
 })
 
+var button = document.getElementById("randomButton"); 
+
 var objects = [];
 
 init();
@@ -73,6 +75,11 @@ function init() {
   scene.add(rasengan);
   hand = new Hand(scene, renderer);
   window.addEventListener("resize", onWindowResize);
+
+  button.addEventListener("click", () => {
+  rasengan.randomize(); 
+  updateInput();
+})
 }
 
 function animate() {

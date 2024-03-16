@@ -191,6 +191,11 @@ class Rasengan extends Jutsu {
     this.innerAuraMaterial.uniforms.uColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
     this.particleMaterial.uniforms.innerColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
     this.particleMaterial.uniforms.outerColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
+
+    this.outerAura.visible = coinFlip(); 
+    this.innerAura.visible = coinFlip(); 
+    this.renderAsParticles = coinFlip(); 
+    
     this.createParticles();
   }
 
@@ -234,6 +239,10 @@ class Rasengan extends Jutsu {
     this.rotateY(this.rotationSpeed.y / 100);
     this.rotateZ(this.rotationSpeed.z / 100);
   }
+}
+
+function coinFlip() {
+  return (Math.random() <= .5) ? true : false;
 }
 
 export default Rasengan;
