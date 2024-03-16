@@ -11,13 +11,12 @@ class Hand {
         this.controller1.addEventListener('selectend', this.onSelectEnd.bind(this));
 
         //this.controller.add(Axes(.02, .02));
-        // this.controller.add(Dot(.01));
+        this.dot = Dot(.01); 
+        this.controller1.add(this.dot);
         scene.add(this.controller1);
 
         this.scene = scene;
-
         this.rasengan = null; 
-
         this.selected = false; 
     }
 
@@ -25,11 +24,12 @@ class Hand {
         console.log("selecting");
 
        if (this.rasengan == null) {
-        this.rasengan = new Rasengan();
+        this.controller1.remove(this.dot);
+        this.rasengan = new Rasengan(); 
         this.rasengan.scale.set(.08, .08, .08);
         this.rasengan.position.set(0, 0, 0);
         } else {
-            this.rasengan.setRandomParametres();
+            this.rasengan.randomize();
         } 
 
        this.controller1.add(this.rasengan);

@@ -95,7 +95,7 @@ class Rasengan extends Jutsu {
 
     this.outerAura = new THREE.Mesh(geometry, this.outerAuraMaterial);
     this.outerAura.visible = true;
-    this.outerAura.scale.set(0.4, 0.4, 0.4);
+    this.outerAura.scale.set(.4, .4 ,.4);
     this.add(this.outerAura);
 
     this.innerAuraMaterial = new THREE.ShaderMaterial({
@@ -131,7 +131,7 @@ class Rasengan extends Jutsu {
       fragmentShader: shaders.particles.fragment,
     });
 
-    this.setRandomParametres();
+    //this.setRandomParametres();
     this.createParticles();
 
     this.rotationSpeed = {
@@ -185,28 +185,17 @@ class Rasengan extends Jutsu {
 
     this.add(this.particles);
   }
+  
+  randomize() {
+    this.outerAuraMaterial.uniforms.uColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
+    this.innerAuraMaterial.uniforms.uColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
+    this.particleMaterial.uniforms.innerColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
+    this.particleMaterial.uniforms.outerColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
 
-  setRandomParametres() {
-    this.outerAuraMaterial.uniforms.uColor.value = new THREE.Color(
-      Math.random(),
-      Math.random(),
-      Math.random()
-    );
-    this.innerAuraMaterial.uniforms.uColor.value = new THREE.Color(
-      Math.random(),
-      Math.random(),
-      Math.random()
-    );
-    this.particleMaterial.uniforms.innerColor.value = new THREE.Color(
-      Math.random(),
-      Math.random(),
-      Math.random()
-    );
-    this.particleMaterial.uniforms.outerColor.value = new THREE.Color(
-      Math.random(),
-      Math.random(),
-      Math.random()
-    );
+    this.outerAura.visible = coinFlip(); 
+    this.innerAura.visible = coinFlip(); 
+    this.renderAsParticles = coinFlip(); 
+    
     this.createParticles();
   }
 
@@ -250,6 +239,10 @@ class Rasengan extends Jutsu {
     this.rotateY(this.rotationSpeed.y / 100);
     this.rotateZ(this.rotationSpeed.z / 100);
   }
+}
+
+function coinFlip() {
+  return (Math.random() <= .5) ? true : false;
 }
 
 export default Rasengan;
