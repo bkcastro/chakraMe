@@ -94,7 +94,7 @@ class Rasengan extends Jutsu {
     });
 
     this.outerAura = new THREE.Mesh(geometry, this.outerAuraMaterial);
-    this.outerAura.visible = false;
+    this.outerAura.visible = true;
     this.outerAura.scale.set(.4, .4 ,.4);
     this.add(this.outerAura);
 
@@ -131,7 +131,7 @@ class Rasengan extends Jutsu {
       fragmentShader: shaders.particles.fragment,
     });
 
-    this.setRandomParametres();
+    //this.setRandomParametres();
     this.createParticles();
 
     this.rotationSpeed = {
@@ -186,7 +186,7 @@ class Rasengan extends Jutsu {
     this.add(this.particles);
   }
 
-  setRandomParametres() {
+  randomize() {
     this.outerAuraMaterial.uniforms.uColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
     this.innerAuraMaterial.uniforms.uColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
     this.particleMaterial.uniforms.innerColor.value = new THREE.Color(Math.random(), Math.random(), Math.random());
