@@ -1,51 +1,50 @@
-
-import * as THREE from 'three';
-import { Axes, Dot } from './tools';
-import Rasengan from './rasengan';
+import * as THREE from "three";
+import { Axes, Dot } from "./tools";
+import Rasengan from "./rasengan";
 
 class Hand {
-    constructor(scene, renderer) {
+  constructor(scene, renderer) {
+    this.controller1 = renderer.xr.getController(0);
+    this.controller1.addEventListener(
+      "selectstart",
+      this.onSelectStart.bind(this)
+    );
+    this.controller1.addEventListener("selectend", this.onSelectEnd.bind(this));
 
-        this.controller1 = renderer.xr.getController(0);
-        this.controller1.addEventListener('selectstart', this.onSelectStart.bind(this));
-        this.controller1.addEventListener('selectend', this.onSelectEnd.bind(this));
+    //this.controller.add(Axes(.02, .02));
+    this.dot = Dot(0.01);
+    this.controller1.add(this.dot);
+    scene.add(this.controller1);
 
-        //this.controller.add(Axes(.02, .02));
-        this.dot = Dot(.01); 
-        this.controller1.add(this.dot);
-        scene.add(this.controller1);
+    this.scene = scene;
+    this.rasengan = null;
+    this.selected = false;
+  }
 
-        this.scene = scene;
-        this.rasengan = null; 
-        this.selected = false; 
+  onSelectStart() {
+    console.log("selecting");
+
+    if (this.rasengan == null) {
+      this.controller1.remove(this.dot);
+      this.rasengan = new Rasengan();
+      this.rasengan.scale.set(0.08, 0.08, 0.08);
+      this.rasengan.position.set(0, 0, 0);
+    } else {
+      this.rasengan.randomize();
     }
 
-    onSelectStart() {
-        console.log("selecting");
+    this.controller1.add(this.rasengan);
+  }
 
-       if (this.rasengan == null) {
-        this.controller1.remove(this.dot);
-        this.rasengan = new Rasengan(); 
-        this.rasengan.scale.set(.08, .08, .08);
-        this.rasengan.position.set(0, 0, 0);
-        } else {
-            this.rasengan.randomize();
-        } 
+  onSelectEnd() {
+    console.log("ending select start");
+  }
 
-       this.controller1.add(this.rasengan);
+  update(time) {
+    if (this.rasengan != null) {
+      this.rasengan.update(time);
     }
-
-    onSelectEnd() {
-        console.log("ending select start");
-    }
-
-    update(time) {
-
-        if (this.rasengan != null) {
-            this.rasengan.update(time);
-        }
-    }
-
+  }
 }
 
 export default Hand;

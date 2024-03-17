@@ -4,6 +4,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import Rasengan from "./rasengan";
 import Hand from "./hand";
+import { convertArray } from "three/src/animation/AnimationUtils";
 
 const clock = new THREE.Clock();
 
@@ -21,9 +22,9 @@ let container,
 var inputsFields = document.querySelectorAll("input");
 inputsFields.forEach((input, i) => {
   input.onchange = action(i);
-})
+});
 
-var button = document.getElementById("randomButton"); 
+var button = document.getElementById("randomButton");
 
 var objects = [];
 
@@ -59,28 +60,31 @@ function init() {
   container.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
+  controls.enablePan = false;
   controls.update();
 
-  document.body.appendChild( XRButton.createButton( renderer, { 'optionalFeatures': [] } ) );
+  document.body.appendChild(
+    XRButton.createButton(renderer, { optionalFeatures: [] })
+  );
 
-  renderer.xr.addEventListener('sessionstart', () => {
+  renderer.xr.addEventListener("sessionstart", () => {
     if (rasengan != null) {
-      scene.remove(rasengan); 
+      scene.remove(rasengan);
     }
   });
 
-  const axesHelper = new THREE.AxesHelper(.4);
+  const axesHelper = new THREE.AxesHelper(0.4);
   scene.add(axesHelper);
-  rasengan = new Rasengan(); 
+  rasengan = new Rasengan();
   scene.add(rasengan);
 
   hand = new Hand(scene, renderer);
   window.addEventListener("resize", onWindowResize);
 
   button.addEventListener("click", () => {
-  rasengan.randomize(); 
-  updateInput();
-})
+    rasengan.randomize();
+    updateInput();
+  });
 }
 
 function animate() {
@@ -113,68 +117,68 @@ function onWindowResize() {
 
 function updateInput() {
   inputsFields.forEach((input, i) => {
-  input.id = i;
+    input.id = i;
 
-  switch (input.id) {
-    case "0":
-      input.value =
-        "#" + rasengan.outerAuraMaterial.uniforms.uColor.value.getHexString();
-      break;
-    case "1":
-      input.value = rasengan.outerAura.scale.x * 50;
-      break;
-    case "2":
-      input.checked = rasengan.outerAura.visible;
-      break;
-    case "3":
-      input.value =
-        "#" + rasengan.innerAuraMaterial.uniforms.uColor.value.getHexString();
-      break;
-    case "4":
-      input.value = rasengan.innerAura.scale.x * 50;
-      break;
-    case "5":
-      input.checked = rasengan.innerAura.visible;
-      break;
-    case "6":
-      input.checked = rasengan.renderAsParticles;
-      break;
-    case "7":
-      input.value = rasengan.particleCount;
-      break;
-    case "8":
-      input.value = rasengan.particleSpeed * 50;
-      break;
-    case "9":
-      input.value = rasengan.particleMaterial.uniforms.uSize.value;
-      break;
-    case "10":
-      input.value = rasengan.particleRadius * 50;
-      break;
-    case "11":
-      input.value =
-        "#" +
-        rasengan.particleMaterial.uniforms.innerColor.value.getHexString();
-      break;
-    case "12":
-      input.value =
-        "#" +
-        rasengan.particleMaterial.uniforms.outerColor.value.getHexString();
-      break;
-    case "13":
-      input.value = rasengan.particles.visible;
-      break;
-    case "14":
-      input.value = rasengan.rotationSpeed.x * 50;
-      break;
-    case "15":
-      input.value = rasengan.rotationSpeed.y * 50;
-      break;
-    case "16":
-      input.value = rasengan.rotationSpeed.z * 50;
-      break;
-  }
-});
+    switch (input.id) {
+      case "0":
+        input.value =
+          "#" + rasengan.outerAuraMaterial.uniforms.uColor.value.getHexString();
+        break;
+      case "1":
+        input.value = rasengan.outerAura.scale.x * 50;
+        break;
+      case "2":
+        input.checked = rasengan.outerAura.visible;
+        break;
+      case "3":
+        input.value =
+          "#" + rasengan.innerAuraMaterial.uniforms.uColor.value.getHexString();
+        break;
+      case "4":
+        input.value = rasengan.innerAura.scale.x * 50;
+        break;
+      case "5":
+        input.checked = rasengan.innerAura.visible;
+        break;
+      case "6":
+        input.checked = rasengan.renderAsParticles;
+        break;
+      case "7":
+        input.value = rasengan.particleCount;
+        break;
+      case "8":
+        input.value = rasengan.particleSpeed * 50;
+        break;
+      case "9":
+        input.value = rasengan.particleMaterial.uniforms.uSize.value;
+        break;
+      case "10":
+        input.value = rasengan.particleRadius * 50;
+        break;
+      case "11":
+        input.value =
+          "#" +
+          rasengan.particleMaterial.uniforms.innerColor.value.getHexString();
+        break;
+      case "12":
+        input.value =
+          "#" +
+          rasengan.particleMaterial.uniforms.outerColor.value.getHexString();
+        break;
+      case "13":
+        input.value = rasengan.particles.visible;
+        break;
+      case "14":
+        input.value = rasengan.rotationSpeed.x * 50;
+        break;
+      case "15":
+        input.value = rasengan.rotationSpeed.y * 50;
+        break;
+      case "16":
+        input.value = rasengan.rotationSpeed.z * 50;
+        break;
+    }
+  });
 }
 
 updateInput();
@@ -234,9 +238,9 @@ function action(id) {
     15: (event) => (rasengan.rotationSpeed.y = event.target.value / 50),
     16: (event) => (rasengan.rotationSpeed.z = event.target.value / 50),
     17: (event) => {
-      rasengan.randomize(); 
+      rasengan.randomize();
       updateInput();
-    }
+    },
   };
 
   return actions[id];
