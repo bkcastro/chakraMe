@@ -82,6 +82,8 @@ class Rasengan extends Jutsu {
   constructor() {
     super();
 
+    this.name = "Rasengan";
+
     const geometry = new THREE.SphereGeometry(1, 60, 60);
     this.outerAuraMaterial = new THREE.ShaderMaterial({
       uniforms: {
